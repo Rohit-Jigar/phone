@@ -1,0 +1,51 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Phone Info Checker</title>
+    <style>
+        body { font-family: Arial; background: #f4f4f4; padding: 30px; }
+        form, .result { background: white; padding: 20px; border-radius: 8px; max-width: 600px; margin: auto; box-shadow: 0 0 10px #ccc; }
+        input { padding: 10px; width: 100%; margin: 10px 0; }
+        button { padding: 10px 20px; background: #4CAF50; color: white; border: none; cursor: pointer; }
+        .section { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <form method="post">
+        <h2>Phone Number Info Checker</h2>
+        <input type="text" name="name" placeholder="Enter Name" required />
+        <input type="text" name="phone" placeholder="Enter Phone Number with +91..." required />
+        <button type="submit">Check</button>
+    </form>
+
+    {% if result %}
+    <div class="result">
+        <h3>Results for {{ result.name }} ({{ result.phone }})</h3>
+
+        {% if result.offline %}
+        <div class="section">
+            <strong>🔍 Offline Info:</strong><br>
+            Location: {{ result.offline.location }}<br>
+            Carrier: {{ result.offline.carrier }}<br>
+            Valid: {{ result.offline.valid }}
+        </div>
+        {% elif result.offline_error %}
+        <p style="color:red;">{{ result.offline_error }}</p>
+        {% endif %}
+
+        {% if result.online %}
+        <div class="section">
+            <strong>🌐 Online Info:</strong><br>
+            Country: {{ result.online.country }}<br>
+            Location: {{ result.online.location }}<br>
+            Carrier: {{ result.online.carrier }}<br>
+            Line Type: {{ result.online.line_type }}
+        </div>
+        {% elif result.online_error %}
+        <p style="color:red;">{{ result.online_error }}</p>
+        {% endif %}
+    </div>
+    {% endif %}
+</body>
+</html>
